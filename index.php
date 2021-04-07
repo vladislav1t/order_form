@@ -21,6 +21,18 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <form method="post" action="order.php">
+            <div class="form-group">
+                <label>Имя</label>
+                <input type="name" name="name" class="form-control"  placeholder="Введите ваше имя">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" placeholder="Введите ваш email">
+            </div>
+            <div class="form-group">
+                <label>Телефон</label>
+                <input type="phone" name="phone" class="form-control" placeholder="Введите ваше телефон">
+            </div>
             <table class="table">
                 <thead>
                 <tr>
