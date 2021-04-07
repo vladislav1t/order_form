@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-        <form  method="post">
+        <form  method="post" action="order.php">
         <table class="table">
             <thead>
             <tr>
@@ -32,15 +32,14 @@ foreach ($itemsdata as $key=>$items):
 ?>
             <tr>
                 <th scope="row"><?php echo $key+1?></th>
-                <td><?php echo $items['name']?></td>
-                <td><?php echo $items['price']?></td>
-                <td><input type="number" value="0"></td>
+                <td><input disabled readonly type="text" name="name" value="<?php echo $items['name']?>"></td>
+                <td><input disabled readonly type="text" name="price" value="<?php echo $items['price']?>"></td>
+                <td><input type="number" name="quantity" value="0"></td>
             </tr>
            <?php endforeach;?>
             </tbody>
         </table>
             <input type="submit" class="btn btn-primary" value="Заказать">
-
         </form>
 
     </div>
