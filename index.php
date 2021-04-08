@@ -50,7 +50,7 @@
                         <td><?php echo $items['name'] ?></td>
                         <td><?php echo $items['price'] ?></td>
                         <td><input type="number" name="quantity[<?php echo $key ?>]"
-                                   value="0"></td>
+                                   value="" placeholder="0"></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
