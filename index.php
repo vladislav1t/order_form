@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -23,15 +24,15 @@
         <form method="post" action="order.php">
             <div class="form-group">
                 <label>Имя</label>
-                <input type="name" name="name" class="form-control"  placeholder="Введите ваше имя">
+                <input type="name" name="name" class="form-control" value="<?php echo (isset($_SESSION['name']) ? $_SESSION['name'] : '') ?>"  placeholder="Введите ваше имя">
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" class="form-control" placeholder="Введите ваш email">
+                <input type="email" name="email" class="form-control" value="<?php echo (isset($_SESSION['email']) ? $_SESSION['email'] : '') ?>" placeholder="Введите ваш email">
             </div>
             <div class="form-group">
                 <label>Телефон</label>
-                <input type="phone" name="phone" class="form-control" placeholder="Введите ваше телефон">
+                <input type="phone" name="phone" class="form-control" value="<?php echo (isset($_SESSION['phone']) ? $_SESSION['phone'] : '') ?>" placeholder="Введите ваше телефон">
             </div>
             <table class="table">
                 <thead>
@@ -50,7 +51,7 @@
                         <td><?php echo $items['name'] ?></td>
                         <td><?php echo $items['price'] ?></td>
                         <td><input type="number" name="quantity[<?php echo $key ?>]"
-                                   value="" placeholder="0"></td>
+                                   value="<?php  echo (isset($_SESSION['cart'][$key]) ? $_SESSION['cart'][$key] : '') ?>" placeholder="0"></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

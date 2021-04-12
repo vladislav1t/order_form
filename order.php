@@ -1,36 +1,63 @@
 <?php
+session_start();
 require_once __DIR__ . '/items.php';
 
-$user = ['name' => $_POST['name'], 'email' => $_POST['email'], 'phone' => $_POST['phone']];
+// @todo: сделать проверки
+// @todo: добавить дату заказа
+$data = [
+   'userInfo'=> [
+        $_POST['name'],
+        $_POST['email'],
+        $_POST['phone'],
+        date('Y-m-d H:i')
+    ]
+];
 
-$datas = [];
+$_SESSION['name'] = $_POST['name'];
+$_SESSION['email'] = $_POST['email'];
+$_SESSION['phone'] = $_POST['phone'];
 
-$datas['user'] = $user;
-
-if (isset($_POST['quantity']) && is_array($_POST['quantity'])):
-
-    foreach ($_POST['quantity'] as $key => $quantity) {
-        if ($quantity):
-            $datas[$key]['name'] = $itemsdata[$key]['name'];
-            $datas[$key]['price'] = $itemsdata[$key]['price'];
-            $datas[$key]['quantity'] = $quantity;
-        endif;
+$productOrders = !empty($_POST['quantity']) && is_array($_POST['quantity']) ?
+    array_filter(
+        array_map(
+            function ($value) {
+                return is_numeric($value) ? (int)$value : null;
+            },
+            $_POST['quantity']
+        )
+    ) : [];
+if (count($productOrders)) {
+    foreach ($productOrders as $key => $quantity) {
+        if (!isset($itemsdata[$key])) {
+            continue;
+        }
+        $_SESSION['cart'][$key] = $quantity;
+        $product = $itemsdata[$key];
+        $data[$key] = [
+            $product['name'],
+            $product['price'],
+            $quantity,
+            $product['price'] * $quantity,
+        ];
     }
-endif;
 
-$file =  'file_' .date(" H_i_s_d_m_Y"). '.csv';
+$file =  'orders/'.date("YmdHis") . '.csv';
+$fp = fopen($file, 'w+');
+if (is_resource($fp)) {
+    foreach ($data as $item) {
+        fputcsv($fp, $item);
+    }
 
-$fp = fopen($file, 'w');
-
-foreach ($datas as $data) {
-    fputcsv($fp, $data);
+    fclose($fp);
 }
 
-fclose($fp);
 
-if (is_readable($file)) {
-    echo 'Успешно';
+    if (is_readable($file)) {
+        echo 'Успешно';
+    } else {
+        echo 'Произошла какая то лажа!';
+    }
 } else {
     echo 'Произошла какая то лажа!';
+    echo "Выберите хоть один продукт для заказа";
 }
-?>
